@@ -1,0 +1,111 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: black; 
+    color: white; 
+}
+
+header {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid white;
+}
+
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid black;
+}
+
+h1, h2 {
+    color: black;
+    text-align: center;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    display: block;
+    margin: 10px auto;
+    border: 2px solid black;
+}
+
+
+a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    text-align: center;
+    
+}
+
+a:hover {
+    text-decoration: underline;
+    color: rgba(224, 214, 214, 0.312);
+}
+
+
+.button {
+    display: inline-block;
+    background: black;
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 18px;
+    border: 2px solid white;
+    transition: background 0.3s, color 0.3s;
+}
+
+.button:hover {
+    background: white;
+    color: black;
+    border: 2px solid black;
+}
+.container .button {
+    display: block;
+    width: fit-content;
+    margin: 20px auto;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: grey;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    color: black;
+    border: 1px solid black;
+}
+
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background: black;
+    color: white;
+    border-top: 2px solid white;
+}

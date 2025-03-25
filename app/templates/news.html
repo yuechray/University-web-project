@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+<link href="{% static 'static/styles/news.css' %}" rel="stylesheet">
+{% block title %}
+    Новости
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<h1 class="news-zag">Новости</h1>
+<div class="container">
+    <div class="filter-container">
+        <form method="GET" class="search-form">
+            <input class="input-find" name="search" placeholder="Поиск новостей..." type="text">
+            <button class="btn-search" type="submit">Поиск</button>
+        </form>
+    
+        <form method="POST" class="sort-form">
+            {% csrf_token %}
+            <span class="sort-label">Сортировать:</span>
+            <label><input type="radio" name="reason" value="upper"> От нового к старому</label>
+            <label><input type="radio" name="reason" value="lower"> От старого к новому</label>
+            <button class="btn-sort" type="submit">Сортировать</button>
+        </form>
+    </div>
+
+    <div class="row gy-4 gx-1">
+        {% if page_obj %}
+            {% for el in page_obj %}
+                <div class="col-md-4">
+                    <div class="card news-item">
+                        {% if el.image %}
+                            <img alt="..." class="card-img-top news-img" src="{% get_media_prefix %}/{{ el.image }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ el.get_absolute_url }}">{{ el.title }} </a></h5>
+                            {% if el.author %}
+                                <p>{{ el.author }}</p>
+                            {% endif %}
+                            <p>{{ el.date_published }}</p>
+                            <a class="btn btn-primary" href="{{ el.get_absolute_url }}">Перейти на новость</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>У нас нет записей</p>
+        {% endif %}
+    </div>
+
+
+    <div class="paginator">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a class="btn btn-light" href="?page=1">&laquo;1</a>
+                {% if not page_obj.previous_page_number == 1 %}
+                    <a class="btn btn-light"
+                       href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                {% endif %}
+            {% endif %}
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                {% if not page_obj.next_page_number == page_obj.paginator.num_pages %}
+                    <a class="btn btn-light"
+                       href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                {% endif %}
+                <a class="btn btn-light"
+                   href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

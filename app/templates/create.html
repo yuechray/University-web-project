@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Создать таск
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+    <h1>Создать новость</h1>
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}<br>
+        {{ form.title }}<br><br>
+        {{ form.task }}<br><br>
+        {{ form.date_published }}<br><br>
+        {{ form.image }}<br><br>
+        {{ form.author }}<br><br>
+        <button class="btn btn-light" type="submit">{{ action }}</button>
+        <br><br>
+        {% if is_delete %}
+            <a class="btn btn-light" href="{% url 'delete_news' pk=task.id %}">Удалить</a>
+        {% endif %}
+    </form>
+{% endblock %}

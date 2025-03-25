@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+   Обратная связь
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+
+<link href="{% static 'styles/pool.css' %}" rel="stylesheet"> 
+    <div class="reviews">
+        {% if user.is_authenticated %}
+            <div class="review-form-container">
+                <h3 class="mb-3">Оставить отзыв</h3>
+                <form enctype="multipart/form-data" method="post" class="review-form">
+                    {% csrf_token %}
+                    <textarea name="text" class="form-control mb-2" placeholder="Введите ваш отзыв" rows="4" required></textarea>
+                    <input type="file" name="image" class="form-control mb-2">
+                    <button class="btn btn-primary mt-2" type="submit">Отправить</button>
+                </form>
+            </div>
+        {% else %}
+            <h3 class="review-dig">Для того чтобы оставить отзыв, вам нужно авторизоваться</h3>
+        {% endif %}
+
+        <hr class="my-4">
+
+        {% if reviews %}
+            <h3 class="mb-4">Отзывы пользователей</h3>
+            <div class="container my-4">
+                <div class="row d-flex justify-content-center">
+                    {% for review in reviews %}
+                        <div class="col-md-10 col-lg-8 mb-4">
+                            <div class="card review-item shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-2">{{ review.author }}</h5>
+                                    <p class="small text-muted">{{ review.date_published|date:"d M Y, H:i" }}</p>
+                                    <p class="card-text">{{ review.text }}</p>
+                                    {% if review.image %}
+                                        <img src="{{ review.image.url }}" alt="Изображение отзыва" class="img-fluid mt-2 rounded">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p class="no-reviews text-muted">Отзывов пока нет. Станьте первым!</p>
+        {% endif %}
+    </div>
+{% endblock %}

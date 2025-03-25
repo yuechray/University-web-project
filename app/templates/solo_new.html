@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Новость
+{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+<link href="{% static 'styles/solo_new.css' %}" rel="stylesheet">  
+    <h1 class="news-el">Новость</h1>
+    <div class="arrow-container">
+        <div class="arrow-item arrow-left"><a href="{% url 'detail_news' pk=task.id %}?post=prev"> Предыдущая новость</a></div>
+        <div class="arrow-item arrow-right"><a href="{% url 'detail_news' pk=task.id %}?post=next"> Следующая новость</a></div>
+    </div>
+    {% if task %}
+    <div class="news-page alert alert-warning mt-2">
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.task|linebreaks }}</p>
+        {% if task.author %}
+            <p>{{ task.author }}</p>
+        {% endif %}
+        <p>{{ task.date_published }}</p>
+        {% if task.image %}
+            <img class="news-image" src="{% get_media_prefix %}/{{ task.image }}">
+        {% endif %}
+    </div>
+        {% if user.is_superuser %}
+            <div class="admin-controls-container">
+                <a href="{% url 'update_news' pk=task.id %}">Редактировать новость</a>
+            </div>
+        {% endif %}
+    {% else %}
+        <p>У нас нет записи</p>
+    {% endif %}
+    <div class="comments">
+        {% if user.is_authenticated %}
+            <div class="com_form">
+                <h3>Ваш комментарий</h3>
+                <form method="POST" class="comment-form">
+                    {% csrf_token %}
+                    <textarea class="comment-text" name="comment" placeholder="Текст комментария..." rows="3"></textarea>
+                    <button class="comment-btn" type="submit">Отправить</button>
+                </form>
+            </div>
+        {% else %}
+            <h3 class="comment-dig">Для того чтобы оставить комментарий, вам нужно авторизоваться</h3>
+        {% endif %}
+        {% if comments %}
+            <div class="container my-5 py-5 text-body">
+                <div class="row d-flex justify-content-center">
+                    {% for comment in comments %}
+                        <div class="col-md-11 col-lg-9 col-xl-7">
+                            <div class="d-flex flex-start mb-4">
+                                <div class="card w-100 comment-item">
+                                    <div class="card-body p-4">
+                                        <div class="">
+                                            <h5>{{ comment.author }}</h5>
+                                            <p class="small">{{ comment.date_published }}</p>
+                                            <p>{{ comment.text }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p class="no-comments">Комментариев пока нет</p>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

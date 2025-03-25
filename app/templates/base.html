@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vault of Wonders{% endblock %}</title>
+    <link href="{% static 'styles/site.css' %}" rel="stylesheet">
+    <link href="{% static 'styles/news.css' %}" rel="stylesheet">
+    <link href="{% static 'styles/solo_new.css' %}" rel="stylesheet">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="logo">Vault of Wonders</div>
+    <header>
+        <a href="{% url 'main' %}">
+            <img src="{% static 'img/logo.png' %}" alt="Логотип" width="50">
+        </a>
+        <h1>{% block header %}Заголовок страницы{% endblock %}</h1>
+        
+        <div class="nav-container">
+            
+            <div class="auth-buttons">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="btn logout">Выйти</a>
+                    {% if user.is_superuser %}
+                    <a href="{% url 'admin' %}" class="btn btn admin " >Admin</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn login">Войти</a>
+                    <a href="{% url 'register' %}" class="btn register">Регистрация</a>
+                    
+                {% endif %}
+            </div>
+            <div class="header-inner">
+                <div class="right_side">
+                    {% if user.is_superuser %}
+                      <div class="create_button">
+                        <a class="btn" href="{% url 'create' %}">Создать новость</a>
+                      </div>  
+                    {% endif %}
+                </div>
+         <nav>   
+            <ul>
+                <li><a href = "{% url 'main' %}"> Главная</a></li>
+                <li><a href = "{% url 'news' %}"> Новости</a></li>
+                <li><a href = "{% url 'about' %}"> О нас</a></li>
+                <li><a href = "{% url 'links' %}"> Контакты</a></li>
+                <li><a href = "{% url 'pool' %}"> Отзывы</a></li>
+             </ul>
+         </nav>
+
+    
+    </header>
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <footer>
+        <p> Почта по вопросам сотрудничества: <a href="mailto:example@email.com" style="color: #FFD700; text-decoration: none;">vaultofwonders@fakemail.ru</a></p>
+    </footer>
+    
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

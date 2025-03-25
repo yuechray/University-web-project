@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<h1>Актуальные новости</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        {% if tasks %}
+            {% for el in tasks %}
+                <div class="col-md-4 mb-4">
+                    <div class="alert alert-warning news-item text-center">
+                        <h3><a href="{{ el.get_absolute_url }}" class="news-link">{{ el.title }}</a></h3>
+                        {% if el.author %}
+                            <p>{{ el.author }}</p>
+                        {% endif %}
+                        <p>{{ el.date_published }}</p>
+                        {% if el.image %}
+                            <img class="news-img" src="media/{{ el.image }}" alt="news image">
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>У нас нет записей</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
