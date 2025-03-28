@@ -85,8 +85,8 @@ def news(request):
             if key == "reason":
                 reason_ = value
                 reasons = {
-                    "upper": "-date_published",
-                    "lower": "date_published"
+                    "upper": "date_published",
+                    "lower": "-date_published"
                 }
 
                 tasks = tasks.order_by(reasons[reason_])

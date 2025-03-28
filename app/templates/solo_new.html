@@ -39,7 +39,8 @@
                 <h3>Ваш комментарий</h3>
                 <form method="POST" class="comment-form">
                     {% csrf_token %}
-                    <textarea class="comment-text" name="comment" placeholder="Текст комментария..." rows="3"></textarea>
+                    {{ form.as_p }}
+                    
                     <button class="comment-btn" type="submit">Отправить</button>
                 </form>
             </div>
