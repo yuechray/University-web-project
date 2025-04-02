@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Видео{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'styles/videopost.css' %}">
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block content %}
+<h1>Видео-материалы</h1>
+
+<div class="video-container">
+    <video width="600" controls poster="/media/posters/poster1.jpg">
+        <source src="/media/videos/video1.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <video width="600" controls poster="/media/posters/poster2.jpg">
+        <source src="/media/videos/video2.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+</div>
+
+{% endblock %}

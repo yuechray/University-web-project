@@ -209,7 +209,8 @@ def radio(request):
             if key == "reason":
                 reason_ = value
 
-
+def videopost(request):
+    return render(request, 'videopost.html')
 
 def pool(request):
     if request.method == "POST":
