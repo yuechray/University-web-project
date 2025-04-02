@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Главная{% endblock %}
 
-{% block header %}{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css"/>
+{% endblock %}
 
 {% block content %}
 <h1>Актуальные новости</h1>
-<div class="container">
+
+
+<div class="multiple-items">
+    <div><img src="/media/Images/News1.jpg" alt="Новость 1"></div>
+    <div><img src="/media/Images/News2.jpg" alt="Новость 2"></div>
+    <div><img src="/media/Images/News4.jpg" alt="Новость 3"></div>
+</div>
+
+
+<div class="container mt-4">
     <div class="row justify-content-center">
         {% if tasks %}
             {% for el in tasks %}
@@ -18,7 +30,7 @@
                         {% endif %}
                         <p>{{ el.date_published }}</p>
                         {% if el.image %}
-                            <img class="news-img" src="media/{{ el.image }}" alt="news image">
+                            <img class="news-img" src="{{ el.image.url }}" alt="news image">
                         {% endif %}
                     </div>
                 </div>
@@ -28,4 +40,10 @@
         {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+    <script src="{% static 'js/carousel.js' %}"></script>
 {% endblock %}

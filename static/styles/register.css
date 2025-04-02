@@ -1,0 +1,55 @@
+.register-up {
+    text-align: center;
+    color: #D4AF37;
+    margin-bottom: 20px;
+    font-family: 'Cinzel', serif;
+}
+
+.register-form {
+    background-color: #1A1A1A;
+    border: 2px solid #D4AF37;
+    padding: 20px;
+    border-radius: 8px;
+    color: #E0E0E0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    width: 350px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-find {
+    width: 90%;
+    margin-bottom: 15px;
+    background-color: #262626;
+    color: #E0E0E0;
+    border: 2px solid #D4AF37;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-find:focus {
+    border-color: #FFFFFF;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+    outline: none;
+}
+
+.register-button {
+    background-color: #D4AF37;
+    color: #1A1A1A;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    width: 60%;
+    margin-top: 10px;
+}
+
+.register-button:hover {
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+}

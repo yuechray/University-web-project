@@ -1,0 +1,180 @@
+.news-image {
+    max-height: 720px;
+    object-fit: cover;
+    max-width: 1080px;
+    border: 2px solid #D4AF37;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.news-zag {
+    text-align: center;
+    color: #D4AF37;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.news-item {
+    height: 100%;
+    background-color: #262626;
+    color: #E0E0E0;
+    border: 2px solid #D4AF37;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s;
+}
+
+.news-item:hover {
+    transform: scale(1.05);
+}
+
+.news-item a {
+    text-decoration: none;
+    color: #D4AF37;
+    transition: color 0.3s;
+}
+
+.news-item a:hover {
+    color: #FFFFFF;
+}
+
+.news-page img {
+    width: auto;
+    border: 2px solid #D4AF37;
+}
+
+.paginator {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.page a:hover {
+    color: #D4AF37;
+    border-bottom: 2px solid #D4AF37;
+}
+
+.current {
+    text-decoration: none;
+    justify-content: center;
+    color: #D4AF37;
+    font-weight: bold;
+}
+
+.input-find {
+    justify-content: center;
+    border: 2px solid #D4AF37;
+    padding: 4px 12px;
+    font-size: 18px;
+    border-radius: 8px;
+    outline: none;
+    background-color: #1A1A1A;
+    color: #E0E0E0;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-find:placeholder-shown {
+    border-color: #D4AF37;
+}
+
+.input-find:focus {
+    border-color: #FFFFFF;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+}
+
+.comment-item {
+    background-color: #1A1A1A;
+    border: 2px solid #D4AF37;
+    color: #E0E0E0;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.news-el {
+    text-align: center;
+    color: #D4AF37;
+}
+
+.arrow-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+.arrow-container a, .admin-controls-container a {
+    text-decoration: none;
+    color: #D4AF37;
+    transition: color 0.3s;
+}
+
+.arrow-container a:hover, .admin-controls-container a:hover {
+    color: #FFFFFF;
+}
+
+.no-comments {
+    text-align: center;
+    color: #E0E0E0;
+}
+
+.comment-dig {
+    text-align: center;
+    padding-top: 40px;
+    color: #D4AF37;
+}
+
+.comment-form-container {
+    margin-bottom: 20px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #444;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    color: #E0E0E0;
+}
+
+.comment-form h3 {
+    margin-bottom: 15px;
+    color: #D4AF37;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.comment-form textarea {
+    background-color: #1A1A1A;
+    color: #E0E0E0;
+    border: 2px solid #555;
+    border-radius: 6px;
+    width: 98%;
+    padding: 10px;
+    margin-bottom: 10px;
+    resize: none;
+    font-size: 14px;
+    outline: none;
+}
+
+.comment-form textarea::placeholder {
+    color: #888;
+}
+
+.comment-form button {
+    background-color: #D4AF37;
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 10px;
+}
+
+.comment-form button:hover {
+    background-color: white;
+    color: black;
+}
