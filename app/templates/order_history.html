@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}История заказов{% endblock %}
+
+{% block header %}История моих заказов{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/order_history.css' %}" rel="stylesheet">
+<div class="orders-container">
+    {% if page_obj %}
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Номер заказа</th>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                    <th>Сумма</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in page_obj %}
+                    <tr class="order-row status-{{ order.status }}">
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.date_created|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ order.status }}">
+                                {{ order.get_status_display }}
+                            </span>
+                        </td>
+                        <td>{{ order.total_price }} ₽</td>
+                        <td>
+                            <a href="{% url 'order_detail' order.id %}" class="btn-view">Просмотр</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn-page">Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn-page">← Назад</a>
+            {% endif %}
+
+            <span class="page-info">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn-page">Далее →</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn-page">Последняя</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="empty-message">
+            <p>У вас пока нет заказов</p>
+            <a href="{% url 'products' %}" class="btn btn-primary">Перейти к товарам</a>
+        </div>
+    {% endif %}
+
+    <div class="order-history-footer">
+        <a href="{% url 'cart' %}" class="btn btn-secondary">Вернуться в корзину</a>
+    </div>
+</div>
+{% endblock %}

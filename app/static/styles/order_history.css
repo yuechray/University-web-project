@@ -1,0 +1,243 @@
+/* Order History Styles */
+.orders-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.orders-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.orders-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.orders-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.order-row.status-confirmed {
+    border-left: 4px solid #28a745;
+}
+
+.order-row.status-cancelled {
+    border-left: 4px solid #dc3545;
+}
+
+.order-row.status-processing {
+    border-left: 4px solid #ffc107;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-badge.status-confirmed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.status-processing {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.btn-view,
+.btn-edit {
+    padding: 8px 16px;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-view:hover,
+.btn-edit:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
+.empty-message {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 8px;
+    color: #666;
+}
+
+.empty-message p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-page {
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid #667eea;
+    color: #667eea;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-page:hover {
+    background: #667eea;
+    color: white;
+}
+
+.page-info {
+    padding: 0 10px;
+    color: #666;
+}
+
+.order-history-footer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Filter Styles */
+.filters {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-input,
+.filter-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+/* Admin Orders Table */
+.admin-orders .admin-table {
+    font-size: 0.95rem;
+}
+
+.paid-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #d4edda;
+    color: #155724;
+    font-size: 0.85rem;
+}
+
+.paid-badge.unpaid {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+@media (max-width: 768px) {
+    .orders-table {
+        font-size: 0.85rem;
+    }
+
+    .orders-table th,
+    .orders-table td {
+        padding: 10px;
+    }
+
+    .filter-form {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        min-width: unset;
+    }
+}

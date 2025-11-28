@@ -384,3 +384,71 @@ def create_product(request):
     }
     
     return render(request, 'create_product.html', context)
+
+
+def order_history(request):
+    """История заказов текущего пользователя"""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    orders = Order.objects.filter(user=request.user).order_by('-date_created')
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'user': request.user,
+        'title': 'История моих заказов'
+    }
+    
+    return render(request, 'order_history.html', context)
+
+
+def order_detail(request, order_id):
+    """Подробная информация о заказе пользователя"""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    try:
+        order = Order.objects.get(pk=order_id, user=request.user)
+    except Order.DoesNotExist:
+        return redirect('order_history')
+    
+    context = {
+        'order': order,
+        'user': request.user,
+        'title': f'Заказ #{order.id}'
+    }
+    
+    return render(request, 'order_detail.html', context)
+
+
+def all_orders(request):
+    """Все заказы для админа"""
+    if not request.user.is_superuser:
+        return redirect('main')
+    
+    orders = Order.objects.all().order_by('-date_created')
+    search = request.GET.get('search')
+    status_filter = request.GET.get('status')
+    
+    if search:
+        orders = orders.filter(user__username__icontains=search) | orders.filter(id__icontains=search)
+    
+    if status_filter:
+        orders = orders.filter(status=status_filter)
+    
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'user': request.user,
+        'title': 'Все заказы',
+        'status_choices': Order.STATUS_CHOICES,
+        'current_status': status_filter
+    }
+    
+    return render(request, 'all_orders.html', context)

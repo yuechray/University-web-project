@@ -89,6 +89,41 @@
     background-clip: text;
 }
 
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.status-badge.status-confirmed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.status-processing {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.success-note {
+    background: rgba(120, 119, 198, 0.1);
+    border-left: 3px solid #7877C6;
+    padding: 15px;
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+    text-align: left;
+    font-size: 0.95em;
+}
+
 .success-actions {
     display: flex;
     gap: 15px;

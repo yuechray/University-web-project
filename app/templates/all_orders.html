@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Все заказы - Админ{% endblock %}
+
+{% block header %}Управление заказами{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/order_history.css' %}" rel="stylesheet">
+<div class="orders-container admin-orders">
+    <div class="filters">
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <input type="text" name="search" placeholder="Поиск по пользователю или ID заказа" 
+                       value="{{ request.GET.search }}" class="filter-input">
+            </div>
+            <div class="filter-group">
+                <select name="status" class="filter-select">
+                    <option value="">Все статусы</option>
+                    {% for status_code, status_name in status_choices %}
+                        <option value="{{ status_code }}" {% if current_status == status_code %}selected{% endif %}>
+                            {{ status_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Фильтр</button>
+        </form>
+    </div>
+
+    {% if page_obj %}
+        <table class="orders-table admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Пользователь</th>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                    <th>Сумма</th>
+                    <th>Оплачено</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in page_obj %}
+                    <tr class="order-row status-{{ order.status }}">
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.user.username }}</td>
+                        <td>{{ order.date_created|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ order.status }}">
+                                {{ order.get_status_display }}
+                            </span>
+                        </td>
+                        <td>{{ order.total_price }} ₽</td>
+                        <td>
+                            {% if order.is_paid %}
+                                <span class="paid-badge">✓ Да</span>
+                            {% else %}
+                                <span class="paid-badge unpaid">✗ Нет</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'admin:app_order_change' order.id %}" class="btn-edit">Редактировать</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="btn-page">Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="btn-page">← Назад</a>
+            {% endif %}
+
+            <span class="page-info">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="btn-page">Далее →</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="btn-page">Последняя</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="empty-message">
+            <p>Заказы не найдены</p>
+        </div>
+    {% endif %}
+
+    <div class="order-history-footer">
+        <a href="{% url 'admin:index' %}" class="btn btn-secondary">В админ-панель</a>
+    </div>
+</div>
+{% endblock %}

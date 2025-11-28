@@ -84,14 +84,21 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('processing', 'В обработке'),
+        ('confirmed', 'Подтвержден'),
+        ('cancelled', 'Отменен'),
+    ]
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     items = models.ManyToManyField(CartItem, verbose_name="Товары")
     total_price = models.DecimalField('Общая стоимость', max_digits=10, decimal_places=2)
     date_created = models.DateTimeField(default=timezone.now, verbose_name="Дата создания")
     is_paid = models.BooleanField('Оплачен', default=False)
+    status = models.CharField('Статус заказа', max_length=20, choices=STATUS_CHOICES, default='processing')
 
     def __str__(self):
-        return f"Заказ #{self.id} от {self.user.username}"
+        return f"Заказ #{self.id} от {self.user.username} ({self.get_status_display()})"
 
     class Meta:
         verbose_name = "Заказ"
