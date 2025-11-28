@@ -1,21 +1,9 @@
-.news-img {
-    max-height: 220px;
-    object-fit: cover;
-    width: 100%;
-    border-bottom: 1px solid rgba(120, 119, 198, 0.2);
-    transition: transform 0.3s ease;
-}
-
-.news-item:hover .news-img {
-    transform: scale(1.05);
-}
-
-.news-zag {
+.products-zag {
     text-align: center;
     margin-bottom: 40px;
 }
 
-.news-item {
+.product-item {
     height: 100%;
     background: rgba(20, 20, 30, 0.6);
     backdrop-filter: blur(20px);
@@ -27,11 +15,12 @@
         0 8px 32px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+    margin-bottom: 30px;
     overflow: hidden;
     position: relative;
 }
 
-.news-item::before {
+.product-item::before {
     content: '';
     position: absolute;
     top: 0;
@@ -43,7 +32,7 @@
     transition: opacity 0.3s ease;
 }
 
-.news-item:hover {
+.product-item:hover {
     transform: translateY(-8px);
     border-color: rgba(120, 119, 198, 0.4);
     box-shadow: 
@@ -52,72 +41,66 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.news-item:hover::before {
+.product-item:hover::before {
     opacity: 1;
 }
 
-.news-item a {
-    text-decoration: none;
-    transition: opacity 0.3s;
+.product-img {
+    max-height: 220px;
+    object-fit: cover;
+    width: 100%;
+    border-bottom: 1px solid rgba(120, 119, 198, 0.2);
+    transition: transform 0.3s ease;
 }
 
-.news-item .card-title a {
+.product-item:hover .product-img {
+    transform: scale(1.05);
+}
+
+.product-img-placeholder {
+    height: 220px;
+    background: linear-gradient(135deg, rgba(120, 119, 198, 0.1), rgba(255, 119, 198, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(120, 119, 198, 0.2);
+    font-size: 14px;
+}
+
+.product-item .card-body {
+    padding: 20px;
+}
+
+.product-item .card-title {
     background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-size: 1.3em;
     font-weight: 600;
-}
-
-.news-item .card-title a:hover {
-    opacity: 0.8;
-}
-
-.news-item .card-body {
-    padding: 20px;
-}
-
-.news-item .card-title {
     margin-bottom: 12px;
-    font-size: 1.2em;
 }
 
-.news-item .card-body p {
-    color: rgba(255, 255, 255, 0.7);
+.product-manufacturer {
+    color: rgba(255, 255, 255, 0.6);
     font-size: 0.9em;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
-.news-item .btn-primary {
-    margin-top: 15px;
+.product-price {
+    background: linear-gradient(135deg, #78DBFF 0%, #7877C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.product-item .btn {
     width: 100%;
-}
-
-.news-page img {
-    width: auto;
-    border: 1px solid rgba(120, 119, 198, 0.3);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-.paginator {
-    display: flex;
-    justify-content: center;
-    padding-top: 30px;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.paginator .btn {
-    margin: 0 5px;
-}
-
-.current {
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 600;
-    padding: 0 15px;
-    font-size: 15px;
+    margin-top: 10px;
 }
 
 .filter-container {
@@ -186,55 +169,33 @@
     box-shadow: 0 6px 20px rgba(120, 119, 198, 0.5);
 }
 
-.sort-form {
+.paginator {
     display: flex;
+    justify-content: center;
+    padding-top: 30px;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
-.sort-label {
+.paginator .btn {
+    margin: 0 5px;
+}
+
+.paginator .current {
     color: rgba(255, 255, 255, 0.8);
-    margin-right: 5px;
     font-weight: 600;
-    font-size: 14px;
+    padding: 0 15px;
+    font-size: 15px;
 }
 
-.sort-form label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    cursor: pointer;
-    padding: 6px 12px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+.create-button {
+    margin-bottom: 30px;
+    text-align: center;
 }
 
-.sort-form label:hover {
-    background: rgba(120, 119, 198, 0.1);
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.sort-form input[type="radio"] {
-    accent-color: #7877C6;
-    cursor: pointer;
-}
-
-.btn-sort {
-    background: linear-gradient(135deg, #78DBFF 0%, #7877C6 100%);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
+.create-button .btn {
+    padding: 12px 30px;
     font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(120, 219, 255, 0.3);
 }
 
-.btn-sort:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(120, 219, 255, 0.5);
-}

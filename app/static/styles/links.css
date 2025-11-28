@@ -20,6 +20,9 @@
 }
 
  ul li a:hover {
-    color: #D4AF37; 
-    border-bottom: 2px solid #D4AF37;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border-bottom: 2px solid rgba(120, 119, 198, 0.6);
 }

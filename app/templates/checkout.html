@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Оформление заказа{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/checkout.css' %}?v=2.0" rel="stylesheet">
+<h1 class="checkout-zag">Оформление заказа</h1>
+
+<div class="checkout-container">
+    <div class="checkout-items">
+        <h2>Товары в заказе:</h2>
+        {% for item in cart_items %}
+            <div class="checkout-item">
+                <p><strong>{{ item.product.name }}</strong> - {{ item.quantity }} шт. × {{ item.product.price }} ₽ = {{ item.get_total_price }} ₽</p>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div class="checkout-summary">
+        <h2>Итого: {{ total_price }} ₽</h2>
+    </div>
+    
+    <form method="POST" class="checkout-form">
+        {% csrf_token %}
+        <p class="checkout-note">Нажмите кнопку ниже для оформления заказа. После оформления товар будет считаться оплаченным.</p>
+        <button type="submit" class="btn btn-primary btn-large">Оформить заказ</button>
+    </form>
+    
+    <div class="checkout-back">
+        <a href="{% url 'cart' %}" class="btn btn-secondary">Вернуться в корзину</a>
+    </div>
+</div>
+{% endblock %}
+

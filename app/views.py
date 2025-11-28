@@ -6,8 +6,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
 from .forms import TaskForm, CommentForm
-from .forms import UserRegisterForm, UserLoginForm, ReviewForm
-from .models import Task, Comment, Review
+from .forms import UserRegisterForm, UserLoginForm, ReviewForm, ProductForm
+from .models import Task, Comment, Review, Product, CartItem, Order
 
 def main(request):
     tasks = Task.objects.order_by('-id')[:3]
@@ -225,3 +225,162 @@ def pool(request):
     reviews = Review.objects.all().order_by('-date_published')  
     
     return render(request, 'pool.html', {'form': form, 'reviews': reviews})
+
+
+def products(request):
+    products_list = Product.objects.all()
+    search = request.GET.get('search')
+    
+    if search:
+        products_list = products_list.filter(name__icontains=search)
+    
+    paginator = Paginator(products_list, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'user': request.user
+    }
+    
+    return render(request, 'products.html', context)
+
+
+def product_detail(request, pk):
+    product = Product.objects.get(pk=pk)
+    context = {
+        'product': product,
+        'user': request.user
+    }
+    return render(request, 'product_detail.html', context)
+
+
+def add_to_cart(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    product = Product.objects.get(pk=pk)
+    cart_item, created = CartItem.objects.get_or_create(
+        user=request.user,
+        product=product,
+        defaults={'quantity': 1}
+    )
+    
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    
+    return redirect('cart')
+
+
+def cart(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    cart_items = CartItem.objects.filter(user=request.user)
+    total_price = sum(item.get_total_price() for item in cart_items)
+    
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'user': request.user
+    }
+    
+    return render(request, 'cart.html', context)
+
+
+def remove_from_cart(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    cart_item = CartItem.objects.get(pk=pk, user=request.user)
+    cart_item.delete()
+    
+    return redirect('cart')
+
+
+def update_cart_quantity(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    cart_item = CartItem.objects.get(pk=pk, user=request.user)
+    quantity = int(request.POST.get('quantity', 1))
+    
+    if quantity > 0:
+        cart_item.quantity = quantity
+        cart_item.save()
+    else:
+        cart_item.delete()
+    
+    return redirect('cart')
+
+
+def checkout(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    cart_items = CartItem.objects.filter(user=request.user)
+    
+    if not cart_items.exists():
+        return redirect('cart')
+    
+    if request.method == 'POST':
+        total_price = sum(item.get_total_price() for item in cart_items)
+        order = Order.objects.create(
+            user=request.user,
+            total_price=total_price,
+            is_paid=True
+        )
+        order.items.set(cart_items)
+        cart_items.delete()
+        
+        return redirect('order_success', order_id=order.id)
+    
+    total_price = sum(item.get_total_price() for item in cart_items)
+    
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'user': request.user
+    }
+    
+    return render(request, 'checkout.html', context)
+
+
+def order_success(request, order_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    try:
+        order = Order.objects.get(pk=order_id, user=request.user)
+    except Order.DoesNotExist:
+        return redirect('main')
+    
+    context = {
+        'order': order,
+        'user': request.user
+    }
+    
+    return render(request, 'order_success.html', context)
+
+
+def create_product(request):
+    if not request.user.is_superuser:
+        return redirect('main')
+    
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('products')
+    else:
+        form = ProductForm()
+    
+    context = {
+        'form': form,
+        'user': request.user,
+        'title': 'Создать товар',
+        'action': 'Создать'
+    }
+    
+    return render(request, 'create_product.html', context)

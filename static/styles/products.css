@@ -1,0 +1,115 @@
+.products-zag {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.product-item {
+    height: 100%;
+    background: rgba(20, 20, 30, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #E0E0E0;
+    border: 1px solid rgba(120, 119, 198, 0.2);
+    border-radius: 16px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7877C6, #FF77C6, #78DBFF);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-8px);
+    border-color: rgba(120, 119, 198, 0.4);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(120, 119, 198, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.product-item:hover::before {
+    opacity: 1;
+}
+
+.product-img {
+    max-height: 220px;
+    object-fit: cover;
+    width: 100%;
+    border-bottom: 1px solid rgba(120, 119, 198, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.product-item:hover .product-img {
+    transform: scale(1.05);
+}
+
+.product-img-placeholder {
+    height: 220px;
+    background: linear-gradient(135deg, rgba(120, 119, 198, 0.1), rgba(255, 119, 198, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(120, 119, 198, 0.2);
+    font-size: 14px;
+}
+
+.product-item .card-body {
+    padding: 20px;
+}
+
+.product-item .card-title {
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.product-manufacturer {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9em;
+    margin-bottom: 12px;
+}
+
+.product-price {
+    background: linear-gradient(135deg, #78DBFF 0%, #7877C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.product-item .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.create-button {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.create-button .btn {
+    padding: 12px 30px;
+    font-weight: 600;
+}
+

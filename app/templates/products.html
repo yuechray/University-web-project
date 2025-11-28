@@ -1,54 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
-<link href="{% static 'styles/news.css' %}?v=2.2" rel="stylesheet">
-{% block title %}
-    Новости
-{% endblock %}
+{% block title %}Товары{% endblock %}
 
 {% block header %}{% endblock %}
 
 {% block content %}
-<h1 class="news-zag">Новости</h1>
+<link href="{% static 'styles/products.css' %}?v=2.2" rel="stylesheet">
+<h1 class="products-zag">Товары</h1>
+
 <div class="container">
     <div class="filter-container">
         <form method="GET" class="search-form">
-            <input class="input-find" name="search" placeholder="Поиск новостей..." type="text">
+            <input class="input-find" name="search" placeholder="Поиск товаров..." type="text">
             <button class="btn-search" type="submit">Поиск</button>
-        </form>
-    
-        <form method="POST" class="sort-form">
-            {% csrf_token %}
-            <span class="sort-label">Сортировать:</span>
-            <label><input type="radio" name="reason" value="upper"> От нового к старому</label>
-            <label><input type="radio" name="reason" value="lower"> От старого к новому</label>
-            <button class="btn-sort" type="submit">Сортировать</button>
         </form>
     </div>
 
+    {% if user.is_superuser %}
+        <div class="create-button">
+            <a class="btn btn-primary" href="{% url 'create_product' %}">Создать товар</a>
+        </div>
+    {% endif %}
+
     <div class="row gy-4 gx-1">
         {% if page_obj %}
-            {% for el in page_obj %}
-                <div class="col-md-4">
-                    <div class="card news-item">
-                        {% if el.image %}
-                            <img alt="..." class="card-img-top news-img" src="{% get_media_prefix %}/{{ el.image }}">
+            {% for product in page_obj %}
+                <div class="col-md-3">
+                    <div class="card product-item">
+                        {% if product.image %}
+                            <img alt="{{ product.name }}" class="card-img-top product-img" src="{% get_media_prefix %}/{{ product.image }}">
+                        {% else %}
+                            <div class="product-img-placeholder">Нет изображения</div>
                         {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title"><a href="{{ el.get_absolute_url }}">{{ el.title }} </a></h5>
-                            {% if el.author %}
-                                <p>{{ el.author }}</p>
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            {% if product.manufacturer %}
+                                <p class="product-manufacturer">Производитель: {{ product.manufacturer }}</p>
                             {% endif %}
-                            <p>{{ el.date_published }}</p>
-                            <a class="btn btn-primary" href="{{ el.get_absolute_url }}">Перейти на новость</a>
+                            <p class="product-price">Цена: {{ product.price }} ₽</p>
+                            <a class="btn btn-primary" href="{% url 'product_detail' pk=product.id %}">Подробнее</a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <p>У нас нет записей</p>
+            <p>Товаров пока нет</p>
         {% endif %}
     </div>
-
 
     <div class="paginator">
         <span class="step-links">
@@ -74,3 +72,4 @@
         </span>
     </div>
 {% endblock %}
+

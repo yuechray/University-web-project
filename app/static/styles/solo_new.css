@@ -2,7 +2,7 @@
     max-height: 720px;
     object-fit: cover;
     max-width: 1080px;
-    border: 2px solid #D4AF37;
+    border: 2px solid rgba(120, 119, 198, 0.8);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     display: block;
     margin-left: auto;
@@ -11,9 +11,12 @@
 
 .news-zag {
     text-align: center;
-    color: #D4AF37;
-    font-family: 'Cinzel', serif;
-    text-transform: uppercase;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 50%, #78DBFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     margin-bottom: 20px;
 }
 
@@ -21,7 +24,7 @@
     height: 100%;
     background-color: #262626;
     color: #E0E0E0;
-    border: 2px solid #D4AF37;
+    border: 2px solid rgba(120, 119, 198, 0.8);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
     transition: transform 0.3s;
@@ -33,7 +36,7 @@
 
 .news-item a {
     text-decoration: none;
-    color: #D4AF37;
+    color: rgba(120, 119, 198, 0.8);
     transition: color 0.3s;
 }
 
@@ -43,7 +46,7 @@
 
 .news-page img {
     width: auto;
-    border: 2px solid #D4AF37;
+    border: 2px solid rgba(120, 119, 198, 0.8);
 }
 
 .paginator {
@@ -53,20 +56,26 @@
 }
 
 .page a:hover {
-    color: #D4AF37;
-    border-bottom: 2px solid #D4AF37;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border-bottom: 2px solid rgba(120, 119, 198, 0.6);
 }
 
 .current {
     text-decoration: none;
     justify-content: center;
-    color: #D4AF37;
-    font-weight: bold;
+    background: linear-gradient(135deg, #78DBFF 0%, #7877C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
 }
 
 .input-find {
     justify-content: center;
-    border: 2px solid #D4AF37;
+    border: 2px solid rgba(120, 119, 198, 0.8);
     padding: 4px 12px;
     font-size: 18px;
     border-radius: 8px;
@@ -77,17 +86,17 @@
 }
 
 .input-find:placeholder-shown {
-    border-color: #D4AF37;
+    border-color: rgba(120, 119, 198, 0.8);
 }
 
 .input-find:focus {
-    border-color: #FFFFFF;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+    border-color: rgba(120, 119, 198, 0.6);
+    box-shadow: 0 0 20px rgba(120, 119, 198, 0.3);
 }
 
 .comment-item {
     background-color: #1A1A1A;
-    border: 2px solid #D4AF37;
+    border: 2px solid rgba(120, 119, 198, 0.8);
     color: #E0E0E0;
     padding: 10px;
     border-radius: 8px;
@@ -96,7 +105,11 @@
 
 .news-el {
     text-align: center;
-    color: #D4AF37;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 50%, #78DBFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
 }
 
 .arrow-container {
@@ -107,12 +120,15 @@
 
 .arrow-container a, .admin-controls-container a {
     text-decoration: none;
-    color: #D4AF37;
-    transition: color 0.3s;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: opacity 0.3s;
 }
 
 .arrow-container a:hover, .admin-controls-container a:hover {
-    color: #FFFFFF;
+    opacity: 0.8;
 }
 
 .no-comments {
@@ -123,7 +139,10 @@
 .comment-dig {
     text-align: center;
     padding-top: 40px;
-    color: #D4AF37;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .comment-form-container {
@@ -138,10 +157,12 @@
 
 .comment-form h3 {
     margin-bottom: 15px;
-    color: #D4AF37;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-size: 18px;
-    font-weight: bold;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    font-weight: 600;
 }
 
 .comment-form textarea {
@@ -162,19 +183,20 @@
 }
 
 .comment-form button {
-    background-color: #D4AF37;
-    color: black;
-    font-weight: bold;
-    text-transform: uppercase;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    color: white;
+    font-weight: 600;
+    text-transform: none;
     padding: 10px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
     margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(120, 119, 198, 0.3);
 }
 
 .comment-form button:hover {
-    background-color: white;
-    color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(120, 119, 198, 0.5);
 }

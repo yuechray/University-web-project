@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Заказ успешно оформлен{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/order_success.css' %}?v=2.0" rel="stylesheet">
+<div class="success-container">
+    <div class="success-content">
+        <div class="success-icon">✓</div>
+        <h1 class="success-title">Заказ успешно оплачен!</h1>
+        <p class="success-message">Ваш заказ #{{ order.id }} успешно оформлен и оплачен.</p>
+        <p class="success-details">
+            <strong>Общая сумма:</strong> {{ order.total_price }} ₽<br>
+            <strong>Дата заказа:</strong> {{ order.date_created|date:"d.m.Y H:i" }}
+        </p>
+        <div class="success-actions">
+            <a href="{% url 'products' %}" class="btn btn-primary">Продолжить покупки</a>
+            <a href="{% url 'main' %}" class="btn btn-secondary">На главную</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

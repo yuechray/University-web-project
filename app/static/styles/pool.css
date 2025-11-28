@@ -36,21 +36,22 @@
 }
 
 .review-form button {
-    background-color: #D4AF37;
-    color: black;
-    font-weight: bold;
-    text-transform: uppercase;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    color: white;
+    font-weight: 600;
+    text-transform: none;
     padding: 10px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
     margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(120, 119, 198, 0.3);
 }
 
 .review-form button:hover {
-    background-color: white;
-    color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(120, 119, 198, 0.5);
 }
 
 .review-item {
@@ -64,11 +65,13 @@
 }
 
 .review-item h5 {
-    color: #D4AF37;
+    background: linear-gradient(135deg, #7877C6 0%, #FF77C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 5px;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .review-item p {

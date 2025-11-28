@@ -111,7 +111,7 @@ class UserUpdate(forms.ModelForm):
 
 
 from django import forms
-from .models import Review
+from .models import Review, Product
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -129,6 +129,42 @@ class ReviewForm(forms.ModelForm):
         }
         labels = {
             'text': 'Содержание',
+            'image': 'Изображение'
+        }
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "description", "price", "manufacturer", "image"]
+        widgets = {
+            'name': forms.TextInput(attrs={
+                "placeholder": "Название товара",
+                "class": "form-control"
+            }),
+            'description': forms.Textarea(attrs={
+                "placeholder": "Описание товара",
+                "rows": 5,
+                "class": "form-control"
+            }),
+            'price': forms.NumberInput(attrs={
+                "placeholder": "Цена",
+                "class": "form-control",
+                "step": "0.01"
+            }),
+            'manufacturer': forms.TextInput(attrs={
+                "placeholder": "Производитель",
+                "class": "form-control"
+            }),
+            'image': forms.ClearableFileInput(attrs={
+                "class": "form-control"
+            })
+        }
+        labels = {
+            'name': 'Название',
+            'description': 'Описание',
+            'price': 'Цена',
+            'manufacturer': 'Производитель',
             'image': 'Изображение'
         }
         

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/product_detail.css' %}?v=2.0" rel="stylesheet">
+<h1 class="product-detail-zag">{{ product.name }}</h1>
+
+<div class="product-detail-container">
+    <div class="product-detail-content">
+        <div class="product-image-section">
+            {% if product.image %}
+                <img class="product-detail-image" src="{% get_media_prefix %}/{{ product.image }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="product-img-placeholder-large">Нет изображения</div>
+            {% endif %}
+        </div>
+        
+        <div class="product-info-section">
+            <div class="product-info">
+                <h2>{{ product.name }}</h2>
+                
+                {% if product.manufacturer %}
+                    <p class="product-manufacturer-detail"><strong>Производитель:</strong> {{ product.manufacturer }}</p>
+                {% endif %}
+                
+                <p class="product-price-detail"><strong>Цена:</strong> {{ product.price }} ₽</p>
+                
+                {% if product.description %}
+                    <div class="product-description">
+                        <h3>Описание:</h3>
+                        <p>{{ product.description|linebreaks }}</p>
+                    </div>
+                {% endif %}
+                
+                {% if user.is_authenticated %}
+                    <form method="POST" action="{% url 'add_to_cart' pk=product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary btn-buy">Купить</button>
+                    </form>
+                {% else %}
+                    <p class="login-required">Для покупки необходимо <a href="{% url 'login' %}">войти</a> в систему</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
