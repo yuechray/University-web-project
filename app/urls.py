@@ -28,4 +28,8 @@ urlpatterns = [
     path('orders/', views.order_history, name='order_history'),
     path('orders/<int:order_id>/', views.order_detail, name='order_detail'),
     path('all-orders/', views.all_orders, name='all_orders'),
+    path('purchase-history/', views.my_purchase_history, name='my_purchase_history'),
+    path('manager-dashboard/', views.manager_dashboard, name='manager_dashboard'),
+    path('change-order-status/<int:order_id>/', views.change_order_status, name='change_order_status'),
+    path('user-purchase-history/<int:user_id>/', views.user_purchase_history, name='user_purchase_history'),
 ]

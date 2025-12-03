@@ -4,10 +4,12 @@ from datetime import datetime
 from django.contrib.auth import login, authenticate, logout
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 
 from .forms import TaskForm, CommentForm
 from .forms import UserRegisterForm, UserLoginForm, ReviewForm, ProductForm
-from .models import Task, Comment, Review, Product, CartItem, Order
+from .models import Task, Comment, Review, Product, CartItem, Order, Manager, OrderItem
+from .helpers import is_admin_or_manager, can_manage_orders, is_manager
 
 def main(request):
     tasks = Task.objects.order_by('-id')[:3]
@@ -200,7 +202,11 @@ def logout_(request):
     return redirect('login')
 
 def admin(request):
-    return redirect('admin')
+    if is_admin_or_manager(request.user):
+        if is_manager(request.user):
+            return redirect('manager_dashboard')
+        return redirect('admin:index')
+    return redirect('main')
 
 def radio(request):
     if request.method == "POST":
@@ -331,7 +337,21 @@ def checkout(request):
             total_price=total_price,
             is_paid=True
         )
-        order.items.set(cart_items)
+        
+        # Создаём OrderItem для каждого товара в корзине
+        for cart_item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                product_name=cart_item.product.name,
+                product_price=cart_item.product.price,
+                manufacturer=cart_item.product.manufacturer,
+                description=cart_item.product.description,
+                image=cart_item.product.image,
+                quantity=cart_item.quantity
+            )
+        
+        # Теперь удаляем корзину
         cart_items.delete()
         
         return redirect('order_success', order_id=order.id)
@@ -424,6 +444,7 @@ def order_detail(request, order_id):
     return render(request, 'order_detail.html', context)
 
 
+
 def all_orders(request):
     """Все заказы для админа"""
     if not request.user.is_superuser:
@@ -452,3 +473,128 @@ def all_orders(request):
     }
     
     return render(request, 'all_orders.html', context)
+
+
+def change_order_status(request, order_id):
+    """Изменить статус заказа (для админа и менеджера)"""
+    if not can_manage_orders(request.user):
+        return redirect('main')
+    
+    try:
+        order = Order.objects.get(pk=order_id)
+    except Order.DoesNotExist:
+        return redirect('all_orders')
+    
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in dict(Order.STATUS_CHOICES):
+            order.status = new_status
+            order.save()
+            return redirect('all_orders')
+    
+    context = {
+        'order': order,
+        'user': request.user,
+        'status_choices': Order.STATUS_CHOICES
+    }
+    
+    return render(request, 'change_order_status.html', context)
+
+
+def manager_dashboard(request):
+    """Панель менеджера со всеми заказами"""
+    if not can_manage_orders(request.user):
+        return redirect('main')
+    
+    # Список пользователей
+    users = User.objects.all().order_by('username')
+    search = request.GET.get('search')
+    selected_user_id = request.GET.get('user_id')
+    status_filter = request.GET.get('status')
+    
+    if search:
+        users = users.filter(username__icontains=search)
+    
+    orders = Order.objects.all().order_by('-date_created')
+    
+    if selected_user_id:
+        orders = orders.filter(user_id=selected_user_id)
+    
+    if status_filter:
+        orders = orders.filter(status=status_filter)
+    
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'users': users,
+        'page_obj': page_obj,
+        'user': request.user,
+        'title': 'Панель менеджера',
+        'status_choices': Order.STATUS_CHOICES,
+        'current_status': status_filter,
+        'selected_user_id': selected_user_id,
+        'search': search
+    }
+    
+    return render(request, 'manager_dashboard.html', context)
+
+
+def user_purchase_history(request, user_id):
+    """История покупок конкретного пользователя (только завершённые заказы)"""
+    if not can_manage_orders(request.user):
+        return redirect('main')
+    
+    try:
+        target_user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return redirect('manager_dashboard')
+    
+    # Только завершённые заказы
+    orders = Order.objects.filter(user=target_user, status='completed').order_by('-date_created')
+    
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'target_user': target_user,
+        'page_obj': page_obj,
+        'user': request.user,
+        'title': f'История покупок {target_user.username}'
+    }
+    
+    return render(request, 'user_purchase_history.html', context)
+
+
+def my_purchase_history(request):
+    """История покупок текущего пользователя (только завершённые заказы)"""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    orders = Order.objects.filter(user=request.user, status='completed').order_by('-date_created')
+    
+    paginator = Paginator(orders, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    # Получить все товары из завершённых заказов
+    purchased_items = []
+    for order in orders:
+        for item in order.items.all():
+            purchased_items.append({
+                'product': item.product,
+                'quantity': item.quantity,
+                'price': item.product.price,
+                'order_date': order.date_created
+            })
+    
+    context = {
+        'page_obj': page_obj,
+        'purchased_items': purchased_items,
+        'user': request.user,
+        'title': 'История покупок'
+    }
+    
+    return render(request, 'my_purchase_history.html', context)

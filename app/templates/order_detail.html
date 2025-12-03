@@ -33,6 +33,8 @@
                             <span class="status-text status-processing">⏳ В обработке</span>
                         {% elif order.status == 'confirmed' %}
                             <span class="status-text status-confirmed">✓ Подтвержден</span>
+                        {% elif order.status == 'completed' %}
+                            <span class="status-text status-completed">✓ Завершен</span>
                         {% elif order.status == 'cancelled' %}
                             <span class="status-text status-cancelled">✗ Отменен</span>
                         {% endif %}
@@ -52,25 +54,25 @@
         </div>
 
         <div class="info-section">
-            <h3>Товары в заказе</h3>
+            <h3>Товары в заказе ({{ order.order_items.count }})</h3>
             <div class="items-list">
-                {% for item in order.items.all %}
+                {% for item in order.order_items.all %}
                     <div class="order-item">
                         <div class="item-info">
-                            {% if item.product.image %}
-                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="item-image">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.product_name }}" class="item-image">
                             {% else %}
                                 <div class="item-image-placeholder">Нет изображения</div>
                             {% endif %}
                             <div class="item-details">
-                                <h4>{{ item.product.name }}</h4>
-                                <p class="manufacturer">Производитель: {{ item.product.manufacturer|default:"Не указан" }}</p>
+                                <h4>{{ item.product_name }}</h4>
+                                <p class="manufacturer">Производитель: {{ item.manufacturer|default:"Не указан" }}</p>
                                 <p class="quantity">Количество: {{ item.quantity }}</p>
-                                <p class="description">{{ item.product.description|truncatewords:15 }}</p>
+                                <p class="description">{{ item.description|truncatewords:15 }}</p>
                             </div>
                         </div>
                         <div class="item-price">
-                            <p class="price">{{ item.product.price }} ₽</p>
+                            <p class="price">{{ item.product_price }} ₽</p>
                             <p class="total">Всего: {{ item.get_total_price }} ₽</p>
                         </div>
                     </div>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Изменить статус заказа #{{ order.id }}{% endblock %}
+
+{% block header %}Изменить статус заказа{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/change_order_status.css' %}" rel="stylesheet">
+<div class="change-status-container">
+    <div class="status-form">
+        <h2>Заказ #{{ order.id }}</h2>
+        <p class="order-info">
+            <strong>Пользователь:</strong> {{ order.user.username }}<br>
+            <strong>Сумма:</strong> {{ order.total_price }} ₽<br>
+            <strong>Дата создания:</strong> {{ order.date_created|date:"d.m.Y H:i" }}
+        </p>
+
+        <form method="POST" class="form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="status">Выберите новый статус:</label>
+                <select name="status" id="status" class="form-select" required>
+                    <option value="">-- Выберите статус --</option>
+                    {% for code, name in status_choices %}
+                        <option value="{{ code }}" {% if code == order.status %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="current-status">
+                <p><strong>Текущий статус:</strong> 
+                    <span class="status-badge status-{{ order.status }}">
+                        {{ order.get_status_display }}
+                    </span>
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                <a href="{% url 'all_orders' %}" class="btn btn-secondary">Отменить</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,12 +1,24 @@
 from django.contrib import admin
 
-from .models import Task, Comment, Review, Product, CartItem, Order
+from .models import Task, Comment, Review, Product, CartItem, Order, Manager, OrderItem
 
 admin.site.register(Task)
 admin.site.register(Comment)
 admin.site.register(Review)
 admin.site.register(Product)
 admin.site.register(CartItem)
+
+@admin.register(Manager)
+class ManagerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'date_created')
+    search_fields = ('user__username',)
+    readonly_fields = ('date_created',)
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('product_name', 'quantity', 'product_price', 'order')
+    search_fields = ('product_name', 'order__id')
+    readonly_fields = ('order', 'product_name', 'product_price', 'manufacturer', 'description', 'image')
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -20,9 +32,6 @@ class OrderAdmin(admin.ModelAdmin):
         }),
         ('Статус', {
             'fields': ('status',)
-        }),
-        ('Товары', {
-            'fields': ('items',)
         }),
     )
     

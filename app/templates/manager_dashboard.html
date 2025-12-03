@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Панель менеджера{% endblock %}
+
+{% block header %}Панель менеджера{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/manager_dashboard.css' %}" rel="stylesheet">
+<div class="manager-dashboard">
+    <div class="dashboard-container">
+        <!-- Поиск пользователя -->
+        <div class="user-search-section">
+            <h3>Поиск пользователя</h3>
+            <form method="GET" class="search-form">
+                <input type="text" name="search" placeholder="Введите имя пользователя" 
+                       value="{{ search }}" class="search-input">
+                <button type="submit" class="btn btn-primary">Поиск</button>
+                <a href="{% url 'manager_dashboard' %}" class="btn btn-secondary">Очистить</a>
+            </form>
+
+            {% if search %}
+                <p class="search-info">Результаты поиска по "{{ search }}"</p>
+            {% endif %}
+        </div>
+
+        <!-- Список пользователей -->
+        <div class="users-list-section">
+            <h3>Список пользователей ({{ users.count }})</h3>
+            {% if users %}
+                <div class="users-list">
+                    {% for u in users %}
+                        <div class="user-card {% if u.id == selected_user_id|add:0 %}active{% endif %}">
+                            <h4>{{ u.username }}</h4>
+                            <p>Email: {{ u.email|default:"Не указан" }}</p>
+                            <a href="?user_id={{ u.id }}" class="btn btn-small">Показать заказы</a>
+                            <a href="{% url 'user_purchase_history' u.id %}" class="btn btn-small btn-secondary">История покупок</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-users">Пользователи не найдены</p>
+            {% endif %}
+        </div>
+
+        <!-- Фильтр и список заказов -->
+        <div class="orders-section">
+            <h3>Заказы</h3>
+            
+            <div class="orders-filter">
+                <form method="GET" class="filter-form">
+                    {% if search %}
+                        <input type="hidden" name="search" value="{{ search }}">
+                    {% endif %}
+                    {% if selected_user_id %}
+                        <input type="hidden" name="user_id" value="{{ selected_user_id }}">
+                    {% endif %}
+                    
+                    <select name="status" class="filter-select">
+                        <option value="">Все статусы</option>
+                        {% for status_code, status_name in status_choices %}
+                            <option value="{{ status_code }}" {% if current_status == status_code %}selected{% endif %}>
+                                {{ status_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Фильтр</button>
+                </form>
+            </div>
+
+            {% if page_obj %}
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Пользователь</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                            <th>Сумма</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in page_obj %}
+                            <tr class="order-row status-{{ order.status }}">
+                                <td>#{{ order.id }}</td>
+                                <td>{{ order.user.username }}</td>
+                                <td>{{ order.date_created|date:"d.m.Y H:i" }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ order.status }}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ order.total_price }} ₽</td>
+                                <td>
+                                    <a href="{% url 'change_order_status' order.id %}" class="btn-action">Изменить статус</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1{% if search %}&search={{ search }}{% endif %}{% if selected_user_id %}&user_id={{ selected_user_id }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="btn-page">Первая</a>
+                        <a href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if selected_user_id %}&user_id={{ selected_user_id }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="btn-page">← Назад</a>
+                    {% endif %}
+
+                    <span class="page-info">
+                        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if selected_user_id %}&user_id={{ selected_user_id }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="btn-page">Далее →</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}{% if selected_user_id %}&user_id={{ selected_user_id }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="btn-page">Последняя</a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="empty-message">
+                    <p>Заказы не найдены</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

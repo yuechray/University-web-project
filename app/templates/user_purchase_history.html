@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}История покупок - {{ target_user.username }}{% endblock %}
+
+{% block header %}История покупок {{ target_user.username }}{% endblock %}
+
+{% block content %}
+<link href="{% static 'styles/purchase_history.css' %}" rel="stylesheet">
+<div class="purchase-history-container">
+    <div class="user-info">
+        <h2>{{ target_user.username }}</h2>
+        <p>Email: {{ target_user.email|default:"Не указан" }}</p>
+        <a href="{% url 'manager_dashboard' %}" class="btn btn-secondary">Вернуться в панель</a>
+    </div>
+
+    {% if page_obj %}
+        <h3>Завершённые заказы ({{ page_obj.paginator.count }})</h3>
+        
+        <div class="purchases-grid">
+            {% for order in page_obj %}
+                <div class="order-card">
+                    <h4>Заказ #{{ order.id }}</h4>
+                    <p class="order-date">Дата: {{ order.date_created|date:"d.m.Y H:i" }}</p>
+                    <p class="order-total">Сумма: {{ order.total_price }} ₽</p>
+                    <p class="order-status">
+                        <span class="status-badge status-{{ order.status }}">
+                            {{ order.get_status_display }}
+                        </span>
+                    </p>
+                    
+                    <div class="items">
+                        <h5>Товары:</h5>
+                        <ul>
+                            {% for item in order.order_items.all %}
+                                <li>
+                                    {{ item.product_name }} x{{ item.quantity }} 
+                                    ({{ item.product_price }} ₽)
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn-page">Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn-page">← Назад</a>
+            {% endif %}
+
+            <span class="page-info">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn-page">Далее →</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn-page">Последняя</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="empty-message">
+            <p>История покупок пуста</p>
+            <a href="{% url 'manager_dashboard' %}" class="btn btn-primary">Вернуться в панель</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

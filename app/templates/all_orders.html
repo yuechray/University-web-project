@@ -60,7 +60,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{% url 'admin:app_order_change' order.id %}" class="btn-edit">Редактировать</a>
+                            <a href="{% url 'change_order_status' order.id %}" class="btn-edit">Изменить</a>
                         </td>
                     </tr>
                 {% endfor %}

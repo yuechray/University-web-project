@@ -87,6 +87,7 @@ class Order(models.Model):
     STATUS_CHOICES = [
         ('processing', 'В обработке'),
         ('confirmed', 'Подтвержден'),
+        ('completed', 'Завершен'),
         ('cancelled', 'Отменен'),
     ]
     
@@ -103,3 +104,37 @@ class Order(models.Model):
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
+
+
+class OrderItem(models.Model):
+    """Сохраняет товары в заказе (не удаляется вместе с CartItem)"""
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items', verbose_name="Заказ")
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, verbose_name="Товар")
+    product_name = models.CharField('Название товара', max_length=200)
+    product_price = models.DecimalField('Цена товара', max_digits=10, decimal_places=2)
+    manufacturer = models.CharField('Производитель', max_length=100, blank=True)
+    description = models.TextField('Описание', blank=True)
+    image = models.ImageField(upload_to="media/Images/products/", verbose_name="Изображение", null=True, blank=True)
+    quantity = models.PositiveIntegerField('Количество', default=1)
+
+    def __str__(self):
+        return f"{self.product_name} x{self.quantity}"
+
+    def get_total_price(self):
+        return self.product_price * self.quantity
+
+    class Meta:
+        verbose_name = "Товар в заказе"
+        verbose_name_plural = "Товары в заказе"
+
+
+class Manager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
+
+    def __str__(self):
+        return f"Менеджер: {self.user.username}"
+
+    class Meta:
+        verbose_name = "Менеджер"
+        verbose_name_plural = "Менеджеры"

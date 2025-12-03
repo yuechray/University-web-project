@@ -51,8 +51,12 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'cart' %}">Корзина</a></li>
                 <li><a href="{% url 'order_history' %}">Мои заказы</a></li>
+                <li><a href="{% url 'my_purchase_history' %}">История покупок</a></li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'all_orders' %}">Все заказы</a></li>
+                {% endif %}
+                {% if user.manager %}
+                    <li><a href="{% url 'manager_dashboard' %}">Панель менеджера</a></li>
                 {% endif %}
             {% endif %}
         </ul>
